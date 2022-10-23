@@ -37,3 +37,5 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 *.iml
+/database.mv.db
+/database.trace.db

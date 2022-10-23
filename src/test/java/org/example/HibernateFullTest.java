@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,13 +46,51 @@ public class HibernateFullTest {
 	   }
     }
 
+	@Test
+	void save_my_first_object() {
+
+		User user = new User(new Long(1L), "Paul", LocalDate.now());
+
+		try {
+
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.persist(user);
+			session.getTransaction().commit();
+
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	@Test
+	void hql_fetch_users() {
+
+		try {
+
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+
+			List<User> users = session.createQuery("select u from User u", User.class).list();
+
+			users.forEach(System.out::println);
+
+			session.getTransaction().commit();
+
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	/*
+	@Ignore
     @SuppressWarnings("unchecked")
     @Test
     public void testBasicUsage() {
 	   // create a couple of events...
 	   Session session = sessionFactory.openSession();
 	   session.beginTransaction();
-	   session.remove(new User("Marco's Friend", LocalDate.now()));
+	   session.remove(new User(new Long(1), "Marco's Friend", LocalDate.now()));
 	   session.getTransaction().commit();
 	   session.close();
 
@@ -64,6 +103,8 @@ public class HibernateFullTest {
 	   session.getTransaction().commit();
 	   session.close();
     }
+
+	 */
 
     @Test
     public void marco_is_in_the_house() {
